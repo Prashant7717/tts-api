@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-// Root route - check ke liye
+// Root route - basic check
 app.get('/', (req, res) => {
   res.send('Text to Speech API is running.');
 });
@@ -23,7 +23,7 @@ app.post('/api/tts', async (req, res) => {
 
   try {
     const response = await axios.post(
-      'https://dsc-team-tts.hf.space/run/predict',
+      'https://dscteam-tts.hf.space/api/predict/',
       { data: [text] },
       {
         headers: {
@@ -33,12 +33,11 @@ app.post('/api/tts', async (req, res) => {
     );
 
     const audio_path = response.data.data?.[0];
-    if (audio_path && audio_path.startsWith("http")) {
+    if (audio_path && audio_path.startsWith('http')) {
       res.json({ audio: audio_path });
     } else {
       res.status(500).json({ error: 'Audio link not found in response' });
     }
-
   } catch (error) {
     res.status(500).json({ error: 'Failed to generate audio', details: error.message });
   }
