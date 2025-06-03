@@ -8,6 +8,12 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
+// Root route - check ke liye
+app.get('/', (req, res) => {
+  res.send('Text to Speech API is running.');
+});
+
+// POST route for TTS
 app.post('/api/tts', async (req, res) => {
   const text = req.body.text;
 
